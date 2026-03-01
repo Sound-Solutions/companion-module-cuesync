@@ -1,0 +1,28 @@
+{
+	"name": "companion-module-cuesync",
+	"version": "1.0.0",
+	"description": "Bitfocus Companion module for CueSync live cue control",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bitfocus/companion-module-cuesync"
+	},
+	"license": "MIT",
+	"prettier": "@companion-module/tools/.prettierrc",
+	"dependencies": {
+		"@companion-module/base": "~1.14.0",
+		"ws": "^8.16.0"
+	},
+	"devDependencies": {
+		"@companion-module/tools": "^2.1.0",
+		"@types/ws": "^8.5.10",
+		"typescript": "~5.4.0"
+	},
+	"engines": {
+		"node": "^18.12 || ^22.8"
+	}
+}
