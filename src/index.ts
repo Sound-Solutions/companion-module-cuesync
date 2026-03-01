@@ -5,7 +5,7 @@ import {
 } from '@companion-module/base'
 import { getConfigFields, type CueSyncConfig } from './config'
 import { CueSyncConnection } from './connection'
-import { createInitialState, type ModuleState } from './state'
+import { createInitialState, remapSlots, type ModuleState } from './state'
 import { getVariableDefinitions, getAllVariableValues } from './variables'
 import { getActions } from './actions'
 import { getFeedbacks } from './feedbacks'
@@ -14,7 +14,7 @@ import { getPresets } from './presets'
 export class CueSyncInstance extends InstanceBase<CueSyncConfig> {
 	public state: ModuleState = createInitialState()
 	public connection: CueSyncConnection = new CueSyncConnection(this)
-	private config: CueSyncConfig = { host: '127.0.0.1', port: 8765 }
+	private config: CueSyncConfig = { host: '127.0.0.1', port: 8765, slotsPerPage: 32 }
 
 	async init(config: CueSyncConfig): Promise<void> {
 		this.config = config
@@ -23,6 +23,7 @@ export class CueSyncInstance extends InstanceBase<CueSyncConfig> {
 	}
 
 	private setupModule(): void {
+		this.state.slotsPerPage = this.config.slotsPerPage || 32
 		this.setActionDefinitions(getActions(this))
 		this.setFeedbackDefinitions(getFeedbacks(this))
 		this.setVariableDefinitions(getVariableDefinitions())
@@ -37,11 +38,20 @@ export class CueSyncInstance extends InstanceBase<CueSyncConfig> {
 	}
 
 	async configUpdated(config: CueSyncConfig): Promise<void> {
+		const hostChanged = config.host !== this.config.host || config.port !== this.config.port
 		this.config = config
-		this.state = createInitialState()
-		this.connection.destroy()
-		this.connection = new CueSyncConnection(this)
-		this.connectToHost()
+		this.state.slotsPerPage = config.slotsPerPage || 32
+		if (hostChanged) {
+			this.state = createInitialState()
+			this.state.slotsPerPage = config.slotsPerPage || 32
+			this.connection.destroy()
+			this.connection = new CueSyncConnection(this)
+			this.connectToHost()
+		} else {
+			// Just slots changed — remap without reconnecting
+			remapSlots(this.state)
+			this.refreshAll()
+		}
 	}
 
 	async destroy(): Promise<void> {

@@ -116,9 +116,14 @@ export function advanceSong(state: ModuleState): string | null {
 
 export function shouldAutoPageFlip(state: ModuleState, firedCueId: string): boolean {
 	if (state.slotMap.size === 0) return false
-	const lastSlotOnPage = Math.max(...state.slotMap.keys())
-	const mapping = state.slotMap.get(lastSlotOnPage)
-	if (!mapping) return false
-	if (mapping.cue.id !== firedCueId) return false
-	return state.currentPage < getTotalPages(state) - 1
+	if (state.currentPage >= getTotalPages(state) - 1) return false
+
+	// Find the last enabled cue on the page
+	const slots = Array.from(state.slotMap.entries()).sort((a, b) => b[0] - a[0])
+	for (const [, mapping] of slots) {
+		if (mapping.cue.isEnabled) {
+			return mapping.cue.id === firedCueId
+		}
+	}
+	return false
 }

@@ -6,7 +6,7 @@ import { getSlotCue } from './state'
 const ACTION_COLORS: Record<string, number> = {
 	osc: combineRgb(10, 132, 255),       // Blue #0A84FF
 	midi: combineRgb(191, 90, 242),      // Purple #BF5AF2
-	rcp: combineRgb(255, 159, 10),       // Orange #FF9F0A
+	rcp: combineRgb(255, 100, 0),        // Deep Orange #FF6400
 	applescript: combineRgb(48, 209, 88), // Green #30D158
 	enable: combineRgb(48, 209, 88),     // Green #30D158
 	group: combineRgb(71, 85, 105),      // Slate #475569
@@ -17,7 +17,7 @@ const ACTION_COLORS: Record<string, number> = {
 const ACTION_COLORS_DIMMED: Record<string, number> = {
 	osc: combineRgb(3, 40, 77),
 	midi: combineRgb(57, 27, 73),
-	rcp: combineRgb(77, 48, 3),
+	rcp: combineRgb(77, 30, 0),
 	applescript: combineRgb(14, 63, 26),
 	enable: combineRgb(14, 63, 26),
 	group: combineRgb(21, 26, 32),

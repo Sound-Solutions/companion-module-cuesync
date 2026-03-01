@@ -12,7 +12,7 @@ export function getPresets(): CompanionPresetDefinitions {
 		name: 'Current Song',
 		style: {
 			text: '$(cuesync:current_song_name)',
-			size: 14,
+			size: 12,
 			color: combineRgb(255, 255, 255),
 			bgcolor: combineRgb(0, 0, 0),
 		},
@@ -42,7 +42,7 @@ export function getPresets(): CompanionPresetDefinitions {
 		name: 'Show Cues',
 		style: {
 			text: 'Show\\nCues',
-			size: 14,
+			size: 12,
 			color: combineRgb(255, 255, 255),
 			bgcolor: combineRgb(40, 40, 40),
 		},
@@ -71,7 +71,7 @@ export function getPresets(): CompanionPresetDefinitions {
 		name: 'Song Picker',
 		style: {
 			text: '$(cuesync:next_song_name)',
-			size: 14,
+			size: 12,
 			color: combineRgb(200, 200, 200),
 			bgcolor: combineRgb(30, 30, 30),
 		},
@@ -92,15 +92,14 @@ export function getPresets(): CompanionPresetDefinitions {
 			name: `Cue Slot ${i}`,
 			style: {
 				text: `$(cuesync:slot_${i}_name)`,
-				size: 14,
+				size: 12,
 				color: combineRgb(255, 255, 255),
 				bgcolor: combineRgb(26, 26, 26),
 			},
 			steps: [
 				{
-					down: [],
-					up: [{ actionId: 'fire_cue_slot', options: { slot: i } }],
-					500: [{ actionId: 'toggle_cue_slot', options: { slot: i } }],
+					down: [{ actionId: 'cue_slot_down', options: { slot: i } }],
+					up: [{ actionId: 'cue_slot_up', options: { slot: i } }],
 				},
 			],
 			feedbacks: [
